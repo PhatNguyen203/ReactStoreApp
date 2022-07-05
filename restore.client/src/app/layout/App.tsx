@@ -11,6 +11,7 @@ import ProdutDetails from "../features/catalog/ProdutDetails";
 import { ToastContainer } from "react-toastify";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
+import BasketPage from "../features/Basket/BasketPage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -39,6 +40,7 @@ function App() {
           <Route path="/catalog/:id" component={ProdutDetails} />
           <Route path="/about" component={AboutPage} />
           <Route path="/contact" component={ContactPage} />
+          <Route path="/basket" component={BasketPage} />
           <Route path="/server-error" component={ServerError} />
           <Route component={NotFound} />
         </Switch>

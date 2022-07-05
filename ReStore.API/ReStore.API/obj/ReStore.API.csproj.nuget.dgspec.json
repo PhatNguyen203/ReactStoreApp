@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lee0n\\OneDrive\\Desktop\\ReactStoreApp\\ReStore.API\\ReStore.API\\ReStore.API.csproj": {}
+    "C:\\Users\\Phat.Nguyen\\Downloads\\programming\\react-asp.net\\ReStore.API\\ReStore.API\\ReStore.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lee0n\\OneDrive\\Desktop\\ReactStoreApp\\ReStore.API\\ReStore.API\\ReStore.API.csproj": {
+    "C:\\Users\\Phat.Nguyen\\Downloads\\programming\\react-asp.net\\ReStore.API\\ReStore.API\\ReStore.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lee0n\\OneDrive\\Desktop\\ReactStoreApp\\ReStore.API\\ReStore.API\\ReStore.API.csproj",
+        "projectUniqueName": "C:\\Users\\Phat.Nguyen\\Downloads\\programming\\react-asp.net\\ReStore.API\\ReStore.API\\ReStore.API.csproj",
         "projectName": "ReStore.API",
-        "projectPath": "C:\\Users\\Lee0n\\OneDrive\\Desktop\\ReactStoreApp\\ReStore.API\\ReStore.API\\ReStore.API.csproj",
-        "packagesPath": "C:\\Users\\Lee0n\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lee0n\\OneDrive\\Desktop\\ReactStoreApp\\ReStore.API\\ReStore.API\\obj\\",
+        "projectPath": "C:\\Users\\Phat.Nguyen\\Downloads\\programming\\react-asp.net\\ReStore.API\\ReStore.API\\ReStore.API.csproj",
+        "packagesPath": "C:\\Users\\Phat.Nguyen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Phat.Nguyen\\Downloads\\programming\\react-asp.net\\ReStore.API\\ReStore.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lee0n\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Phat.Nguyen\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,6 +44,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.6, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

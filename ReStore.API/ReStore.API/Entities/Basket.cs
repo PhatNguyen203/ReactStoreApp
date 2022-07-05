@@ -16,7 +16,6 @@ namespace ReStore.API.Entities
 			if (Items.All(item => item.ProductId != product.Id))
 			{
 				Items.Add(new BasketItem { Product = product, Quantity = quantity });
-				return;
 			}
 
 			var existingItem = Items.FirstOrDefault(x => x.ProductId == product.Id);
