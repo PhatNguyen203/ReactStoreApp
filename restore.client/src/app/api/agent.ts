@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 
-axios.defaults.baseURL = "https://localhost:7251/api/";
+axios.defaults.baseURL = "http://localhost:5251/api/";
 axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
