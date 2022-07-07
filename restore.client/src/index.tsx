@@ -5,7 +5,7 @@ import App from "./app/layout/App";
 import { Router } from "react-router";
 import "react-toastify/dist/ReactToastify.css";
 import { createBrowserHistory } from "history";
-
+import { StoreProvider } from "./app/context/StoreContext";
 
 export const history = createBrowserHistory();
 
@@ -15,7 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Router history={history}>
     <React.StrictMode>
-      <App />
+      <StoreProvider>
+        <App />
+      </StoreProvider>
     </React.StrictMode>
   </Router>
 );
