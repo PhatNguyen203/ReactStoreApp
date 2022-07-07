@@ -64,7 +64,7 @@ namespace ReStore.API.Controllers
             var buyerId = Guid.NewGuid().ToString();
             //set cookies
             var cookiesOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30), HttpOnly=true };
-            Response.Cookies.Append("BuyerId", buyerId, cookiesOptions);
+            Response.Cookies.Append("buyerId", buyerId, cookiesOptions);
 
             var basket = new Basket { BuyerId = buyerId };
             context.Baskets.Add(basket);
@@ -76,7 +76,7 @@ namespace ReStore.API.Controllers
             return await context.Baskets
                             .Include(i => i.Items)
                             .ThenInclude(p => p.Product)
-                            .FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["BuyerId"]);
+                            .FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["buyerId"]);
         }
 
         private BasketDto MapBasketToBasketDto(Basket basket)
