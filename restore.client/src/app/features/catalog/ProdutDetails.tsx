@@ -16,18 +16,18 @@ import agent from "../../api/agent";
 import NotFound from "../../errors/NotFound";
 import Loading from "../../layout/Loading";
 import { currencyFormat } from "../../utils/utils";
-import { removeItem, setBasket } from "../Basket/BasketSlice";
+import { addBasketItemAsync } from "../Basket/BasketSlice";
 import Product from "./../../models/Product";
 import { useAppDispatch, useAppSelector } from "./../../store/configureStore";
+import { removeBasketItemAsync } from "./../Basket/BasketSlice";
 
 export default function ProdutDetails() {
   const { id } = useParams<{ id: string }>();
-  const { basket } = useAppSelector((state) => state.basket);
+  const { basket, status } = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
   const item = basket?.items.find((item) => item.productId === parseInt(id));
 
   useEffect(() => {
@@ -43,24 +43,22 @@ export default function ProdutDetails() {
   }
 
   function handleUpdateCart() {
-    setSubmitting(true);
     if (!item || quantity > item.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
-      console.log(updatedQuantity);
-      agent.Basket.AddItem(product?.id!, updatedQuantity)
-        .then((basket) => dispatch(setBasket(basket)))
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+      dispatch(
+        addBasketItemAsync({
+          productId: product?.id!,
+          quantity: updatedQuantity,
+        })
+      );
     } else {
       const updatedQuantity = item.quantity - quantity;
-      agent.Basket.DeleteItem(product?.id!, updatedQuantity)
-        .then(() =>
-          dispatch(
-            removeItem({ productId: product?.id!, quantity: updatedQuantity })
-          )
-        )
-        .catch((error) => console.log(error))
-        .finally(() => setSubmitting(false));
+      dispatch(
+        removeBasketItemAsync({
+          productId: product?.id!,
+          quantity: updatedQuantity,
+        })
+      );
     }
   }
 
@@ -121,10 +119,12 @@ export default function ProdutDetails() {
           <Grid item xs={6}>
             <LoadingButton
               disabled={
-                item?.quantity === quantity || (item! && item.quantity === 0)
+                item?.quantity === quantity ||
+                item?.quantity === 0 ||
+                item === undefined
               }
               onClick={handleUpdateCart}
-              loading={submitting}
+              loading={status === "pendingRemoveIte" + product.id}
               sx={{ height: "55px" }}
               color="primary"
               size="large"
