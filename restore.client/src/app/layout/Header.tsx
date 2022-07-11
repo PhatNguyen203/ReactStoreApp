@@ -10,9 +10,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/StoreContext";
+import { useAppSelector } from "./../store/configureStore";
 
 interface Props {
   darkMode: boolean;
@@ -29,7 +28,7 @@ const rightLinks = [
   { title: "login", path: "/login" },
 ];
 export default function Header({ darkMode, handleThemeChange }: Props) {
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (

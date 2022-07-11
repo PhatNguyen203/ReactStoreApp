@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useStoreContext } from "../../context/StoreContext";
 import Product from "../../models/Product";
+import { useAppDispatch } from "../../store/configureStore";
 import { currencyFormat } from "../../utils/utils";
+import { setBasket } from "../Basket/BasketSlice";
 import agent from "./../../api/agent";
 
 interface Props {
@@ -22,12 +23,12 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
   const [loading, setLoading] = useState(false);
-  const { setBasket } = useStoreContext();
+  const dispatch = useAppDispatch();
 
   function handleAddItem(productId: number) {
     setLoading(true);
     agent.Basket.AddItem(productId)
-      .then((basket) => setBasket(basket))
+      .then((basket) => dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }

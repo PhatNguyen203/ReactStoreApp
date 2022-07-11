@@ -13,15 +13,17 @@ import {
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import agent from "../../api/agent";
-import { useStoreContext } from "../../context/StoreContext";
 import NotFound from "../../errors/NotFound";
 import Loading from "../../layout/Loading";
 import { currencyFormat } from "../../utils/utils";
+import { removeItem, setBasket } from "../Basket/BasketSlice";
 import Product from "./../../models/Product";
+import { useAppDispatch, useAppSelector } from "./../../store/configureStore";
 
 export default function ProdutDetails() {
   const { id } = useParams<{ id: string }>();
-  const { basket, setBasket, removeItem } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(0);
@@ -38,8 +40,6 @@ export default function ProdutDetails() {
 
   function handleInputChange(event: any) {
     if (event.target.value >= 0) setQuantity(parseInt(event.target.value));
-    console.log("quantity ", quantity);
-    console.log("item ", item?.quantity);
   }
 
   function handleUpdateCart() {
@@ -48,13 +48,17 @@ export default function ProdutDetails() {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
       console.log(updatedQuantity);
       agent.Basket.AddItem(product?.id!, updatedQuantity)
-        .then((basket) => setBasket(basket))
+        .then((basket) => dispatch(setBasket(basket)))
         .catch((error) => console.log(error))
         .finally(() => setSubmitting(false));
     } else {
       const updatedQuantity = item.quantity - quantity;
       agent.Basket.DeleteItem(product?.id!, updatedQuantity)
-        .then((basket) => removeItem(product?.id!, updatedQuantity))
+        .then(() =>
+          dispatch(
+            removeItem({ productId: product?.id!, quantity: updatedQuantity })
+          )
+        )
         .catch((error) => console.log(error))
         .finally(() => setSubmitting(false));
     }
