@@ -10,33 +10,32 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import agent from "../../api/agent";
 import NotFound from "../../errors/NotFound";
 import Loading from "../../layout/Loading";
 import { currencyFormat } from "../../utils/utils";
 import { addBasketItemAsync } from "../Basket/BasketSlice";
-import Product from "./../../models/Product";
 import { useAppDispatch, useAppSelector } from "./../../store/configureStore";
 import { removeBasketItemAsync } from "./../Basket/BasketSlice";
+import { fetchProductAsync, productsSelectors } from "./catalogSlice";
 
 export default function ProdutDetails() {
   const { id } = useParams<{ id: string }>();
   const { basket, status } = useAppSelector((state) => state.basket);
-  const dispatch = useAppDispatch();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { status: productStatus } = useAppSelector((state) => state.catalog);
+  const product = useAppSelector((state) =>
+    productsSelectors.selectById(state, id)
+  );
   const [quantity, setQuantity] = useState(0);
   const item = basket?.items.find((item) => item.productId === parseInt(id));
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (item) setQuantity(item.quantity);
-    agent.Catalog.details(parseInt(id))
-      .then((product) => setProduct(product))
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, [id, item]);
+    if (product === undefined) dispatch(fetchProductAsync(parseInt(id)));
+    console.log(product);
+  }, [id, item, dispatch, product]);
 
   function handleInputChange(event: any) {
     if (event.target.value >= 0) setQuantity(parseInt(event.target.value));
@@ -62,8 +61,9 @@ export default function ProdutDetails() {
     }
   }
 
-  if (loading) return <Loading message="Loading Product Details..." />;
-  if (!product) return <NotFound />;
+  if (productStatus.includes("pending"))
+    return <Loading message="Loading Product Details..." />;
+  if (product === undefined) return <NotFound />;
   return (
     <Grid container spacing={6}>
       <Grid item xs={6}>

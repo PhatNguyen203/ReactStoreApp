@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { basketSlice } from "../features/Basket/BasketSlice";
+import { catalogSlice } from "../features/catalog/catalogSlice";
 import { counterSlice } from "../features/contact/counterSlice";
 
 // export function configureStore() {
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
     basket: basketSlice.reducer,
+    catalog: catalogSlice.reducer,
   },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself
