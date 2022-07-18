@@ -47,7 +47,7 @@ namespace ReStore.API.Controllers
 
             return Ok(product);   
         }
-        [HttpGet("filter")]
+        [HttpGet("filters")]
         public async Task<IActionResult> Get() 
         {
             var brands = await context.Products.Select(p => p.Brand).Distinct().ToListAsync();

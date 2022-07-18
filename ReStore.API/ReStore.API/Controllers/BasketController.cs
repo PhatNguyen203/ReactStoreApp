@@ -27,7 +27,7 @@ namespace ReStore.API.Controllers
             var basket = await RetrieveBasket();
             if(basket == null) return NotFound();
 
-           return Ok(MapBasketToBasketDto(basket));
+           return MapBasketToBasketDto(basket);
         }
 
         [HttpPost] //api/basket?productId=1&quantity=1
