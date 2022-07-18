@@ -33,8 +33,7 @@ export default function ProdutDetails() {
 
   useEffect(() => {
     if (item) setQuantity(item.quantity);
-    if (product === undefined) dispatch(fetchProductAsync(parseInt(id)));
-    console.log(product);
+    if (!product) dispatch(fetchProductAsync(parseInt(id)));
   }, [id, item, dispatch, product]);
 
   function handleInputChange(event: any) {

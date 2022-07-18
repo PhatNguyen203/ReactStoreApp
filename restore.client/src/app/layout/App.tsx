@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     const buyerId = getCookie("BuyerId");
     if (buyerId) {
-      agent.Basket.getBasket()
+      agent.Basket.get()
         .then((basket) => dispatch(setBasket(basket)))
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));

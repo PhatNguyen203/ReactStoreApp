@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
+import { PaginationResponse } from "../models/Pagination";
 
 axios.defaults.baseURL = "http://localhost:5251/api/";
 axios.defaults.withCredentials = true;
@@ -8,7 +9,11 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.response.use(
-  (res) => {
+  async (res) => {
+    const pagination = res.headers["pagination"];
+    if (pagination) {
+      res.data = new PaginationResponse(res.data, JSON.parse(pagination));
+    }
     return res;
   },
   (error: AxiosError) => {
@@ -47,15 +52,17 @@ axios.interceptors.response.use(
 );
 
 const requests = {
-  get: (url: string) => axios.get(url).then(responseBody),
+  get: (url: string, params?: URLSearchParams) =>
+    axios.get(url, { params }).then(responseBody),
   post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
   put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const Catalog = {
-  list: () => requests.get("products"),
+  list: (params: URLSearchParams) => requests.get("products", params),
   details: (id: number) => requests.get(`products/${id}`),
+  fetchFilters: () => requests.get("products/filters"),
 };
 
 const Errors = {
@@ -67,10 +74,10 @@ const Errors = {
 };
 
 const Basket = {
-  getBasket: () => requests.get("basket"),
-  AddItem: (productId: number, quantity = 1) =>
+  get: () => requests.get("basket"),
+  addItem: (productId: number, quantity = 1) =>
     requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
-  DeleteItem: (productId: number, quantity = 1) =>
+  removeItem: (productId: number, quantity = 1) =>
     requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
 };
 
